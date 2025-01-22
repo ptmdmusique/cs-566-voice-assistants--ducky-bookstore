@@ -3,13 +3,17 @@
  * Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
  * session persistence, api calls, and more.
  * */
-const Alexa = require("ask-sdk-core");
+import {
+  ErrorHandler,
+  getIntentName,
+  getRequestType,
+  RequestHandler,
+  SkillBuilders,
+} from "ask-sdk-core";
 
-const LaunchRequestHandler = {
+const LaunchRequestHandler: RequestHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === "LaunchRequest"
-    );
+    return getRequestType(handlerInput.requestEnvelope) === "LaunchRequest";
   },
   handle(handlerInput) {
     const speakOutput =
@@ -22,11 +26,11 @@ const LaunchRequestHandler = {
   },
 };
 
-const HelloWorldIntentHandler = {
+const HelloWorldIntentHandler: RequestHandler = {
   canHandle(handlerInput) {
     return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
-      Alexa.getIntentName(handlerInput.requestEnvelope) === "HelloWorldIntent"
+      getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+      getIntentName(handlerInput.requestEnvelope) === "HelloWorldIntent"
     );
   },
   handle(handlerInput) {
@@ -41,11 +45,11 @@ const HelloWorldIntentHandler = {
   },
 };
 
-const HelpIntentHandler = {
+const HelpIntentHandler: RequestHandler = {
   canHandle(handlerInput) {
     return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
-      Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.HelpIntent"
+      getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+      getIntentName(handlerInput.requestEnvelope) === "AMAZON.HelpIntent"
     );
   },
   handle(handlerInput) {
@@ -58,14 +62,12 @@ const HelpIntentHandler = {
   },
 };
 
-const CancelAndStopIntentHandler = {
+const CancelAndStopIntentHandler: RequestHandler = {
   canHandle(handlerInput) {
     return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
-      (Alexa.getIntentName(handlerInput.requestEnvelope) ===
-        "AMAZON.CancelIntent" ||
-        Alexa.getIntentName(handlerInput.requestEnvelope) ===
-          "AMAZON.StopIntent")
+      getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+      (getIntentName(handlerInput.requestEnvelope) === "AMAZON.CancelIntent" ||
+        getIntentName(handlerInput.requestEnvelope) === "AMAZON.StopIntent")
     );
   },
   handle(handlerInput) {
@@ -79,12 +81,11 @@ const CancelAndStopIntentHandler = {
  * It must also be defined in the language model (if the locale supports it)
  * This handler can be safely added but will be ingnored in locales that do not support it yet
  * */
-const FallbackIntentHandler = {
+const FallbackIntentHandler: RequestHandler = {
   canHandle(handlerInput) {
     return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
-      Alexa.getIntentName(handlerInput.requestEnvelope) ===
-        "AMAZON.FallbackIntent"
+      getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+      getIntentName(handlerInput.requestEnvelope) === "AMAZON.FallbackIntent"
     );
   },
   handle(handlerInput) {
@@ -101,11 +102,10 @@ const FallbackIntentHandler = {
  * session is closed for one of the following reasons: 1) The user says "exit" or "quit". 2) The user does not
  * respond or says something that does not match an intent defined in your voice model. 3) An error occurs
  * */
-const SessionEndedRequestHandler = {
+const SessionEndedRequestHandler: RequestHandler = {
   canHandle(handlerInput) {
     return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) ===
-      "SessionEndedRequest"
+      getRequestType(handlerInput.requestEnvelope) === "SessionEndedRequest"
     );
   },
   handle(handlerInput) {
@@ -121,14 +121,12 @@ const SessionEndedRequestHandler = {
  * It will simply repeat the intent the user said. You can create custom handlers for your intents
  * by defining them above, then also adding them to the request handler chain below
  * */
-const IntentReflectorHandler = {
+const IntentReflectorHandler: RequestHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
-    );
+    return getRequestType(handlerInput.requestEnvelope) === "IntentRequest";
   },
   handle(handlerInput) {
-    const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
+    const intentName = getIntentName(handlerInput.requestEnvelope);
     const speakOutput = `You just triggered ${intentName}`;
 
     return (
@@ -144,7 +142,7 @@ const IntentReflectorHandler = {
  * stating the request handler chain is not found, you have not implemented a handler for
  * the intent being invoked or included it in the skill builder below
  * */
-const ErrorHandler = {
+const ErrorHandler: ErrorHandler = {
   canHandle() {
     return true;
   },
@@ -160,12 +158,7 @@ const ErrorHandler = {
   },
 };
 
-/**
- * This handler acts as the entry point for your skill, routing all request and response
- * payloads to the handlers above. Make sure any new handlers or interceptors you've
- * defined are included below. The order matters - they're processed top to bottom
- * */
-exports.handler = Alexa.SkillBuilders.custom()
+export const handler = SkillBuilders.custom()
   .addRequestHandlers(
     LaunchRequestHandler,
     HelloWorldIntentHandler,
