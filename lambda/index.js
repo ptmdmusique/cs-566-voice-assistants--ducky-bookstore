@@ -7,12 +7,13 @@ exports.handler = void 0;
  * session persistence, api calls, and more.
  * */
 const ask_sdk_core_1 = require("ask-sdk-core");
+const utils_1 = require("./utils");
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return (0, ask_sdk_core_1.getRequestType)(handlerInput.requestEnvelope) === "LaunchRequest";
     },
     handle(handlerInput) {
-        const speakOutput = "Welcome, you can say Hello or Help. Which would you like to try?";
+        const speakOutput = "Hello from Ducky. Welcome to my Bookstore, what can I get ya today?";
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
@@ -26,6 +27,22 @@ const SearchBooksIntentHandler = {
     },
     handle(handlerInput) {
         const speakOutput = "Hello World from Ducky!";
+        const slots = handlerInput.requestEnvelope.request.intent
+            .slots;
+        if (!slots) {
+            return handlerInput.responseBuilder
+                .speak("I don't think that's a question for me, let's try again!")
+                .reprompt((0, utils_1.getRepromptPrompts)())
+                .getResponse();
+        }
+        const userInput = (0, utils_1.getUserInputFromSlots)(slots);
+        const results = (0, utils_1.queryForData)(userInput);
+        if (results.length === 0) {
+            return handlerInput.responseBuilder
+                .speak((0, utils_1.getNoResultPrompt)())
+                .reprompt((0, utils_1.getRepromptPrompts)())
+                .getResponse();
+        }
         return (handlerInput.responseBuilder
             .speak(speakOutput)
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')

@@ -10,6 +10,14 @@ import {
   RequestHandler,
   SkillBuilders,
 } from "ask-sdk-core";
+import { IntentRequest } from "ask-sdk-model";
+import { Slots } from "./types";
+import {
+  getNoResultPrompt,
+  getRepromptPrompts,
+  getUserInputFromSlots,
+  queryForData,
+} from "./utils";
 
 const LaunchRequestHandler: RequestHandler = {
   canHandle(handlerInput) {
@@ -17,7 +25,7 @@ const LaunchRequestHandler: RequestHandler = {
   },
   handle(handlerInput) {
     const speakOutput =
-      "Welcome, you can say Hello or Help. Which would you like to try?";
+      "Hello from Ducky. Welcome to my Bookstore, what can I get ya today?";
 
     return handlerInput.responseBuilder
       .speak(speakOutput)
@@ -35,6 +43,25 @@ const SearchBooksIntentHandler: RequestHandler = {
   },
   handle(handlerInput) {
     const speakOutput = "Hello World from Ducky!";
+    const slots = (handlerInput.requestEnvelope.request as IntentRequest).intent
+      .slots as unknown as Slots;
+
+    if (!slots) {
+      return handlerInput.responseBuilder
+        .speak("I don't think that's a question for me, let's try again!")
+        .reprompt(getRepromptPrompts())
+        .getResponse();
+    }
+
+    const userInput = getUserInputFromSlots(slots);
+    const results = queryForData(userInput);
+
+    if (results.length === 0) {
+      return handlerInput.responseBuilder
+        .speak(getNoResultPrompt())
+        .reprompt(getRepromptPrompts())
+        .getResponse();
+    }
 
     return (
       handlerInput.responseBuilder

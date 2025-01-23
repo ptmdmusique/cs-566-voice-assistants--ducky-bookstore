@@ -66,52 +66,52 @@
           "values": [
             {
               "name": {
-                "value": "Travel"
+                "value": "travel"
               }
             },
             {
               "name": {
-                "value": "Technology"
+                "value": "technology"
               }
             },
             {
               "name": {
-                "value": "Romance"
+                "value": "romance"
               }
             },
             {
               "name": {
-                "value": "History"
+                "value": "history"
               }
             },
             {
               "name": {
-                "value": "Self-help"
+                "value": "self-help"
               }
             },
             {
               "name": {
-                "value": "Biography"
+                "value": "biography"
               }
             },
             {
               "name": {
-                "value": "Fantasy"
+                "value": "fantasy"
               }
             },
             {
               "name": {
-                "value": "Science"
+                "value": "science"
               }
             },
             {
               "name": {
-                "value": "Nonfiction"
+                "value": "nonfiction"
               }
             },
             {
               "name": {
-                "value": "Fiction"
+                "value": "fiction"
               }
             }
           ],
