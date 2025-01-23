@@ -15,16 +15,41 @@
           "samples": []
         },
         {
-          "slots": [],
-          "name": "HelloWorldIntent",
+          "slots": [
+            {
+              "name": "BookTitle",
+              "type": "AMAZON.SearchQuery"
+            },
+            {
+              "name": "AuthorName",
+              "type": "AMAZON.Person"
+            },
+            {
+              "name": "PublishedDate",
+              "type": "AMAZON.DATE"
+            },
+            {
+              "name": "Genre",
+              "type": "BookGenre"
+            }
+          ],
+          "name": "SearchBooksIntent",
           "samples": [
-            "hello",
-            "how are you",
-            "say hi world",
-            "say hi",
-            "hi",
-            "say hello world",
-            "say hello"
+            "List to me all the books published before {PublishedDate}",
+            "Is there any parody of the {BookTitle} book",
+            "Show me the parody of {BookTitle}",
+            "List me all the books written by {AuthorName} and published before {PublishedDate}",
+            "List me all the books written by {AuthorName}",
+            "I want to buy a book written by {AuthorName}",
+            "Find me {Genre} books published after {PublishedDate}",
+            "Show me {Genre} books",
+            "I want to buy a book from {AuthorName} in the {Genre} genre",
+            "Help me find some {Genre} books that are written by {AuthorName}",
+            "Do you have any book written by {AuthorName} but published after {PublishedDate}",
+            "How much is {BookTitle}",
+            "Are there any books not in the {Genre} genre",
+            "I want to find some books related to {BookTitle}",
+            "Show me the {BookTitle}"
           ]
         },
         {
@@ -36,8 +61,64 @@
           "samples": []
         }
       ],
-      "types": [],
-      "invocationName": "change me"
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Travel"
+              }
+            },
+            {
+              "name": {
+                "value": "Technology"
+              }
+            },
+            {
+              "name": {
+                "value": "Romance"
+              }
+            },
+            {
+              "name": {
+                "value": "History"
+              }
+            },
+            {
+              "name": {
+                "value": "Self-help"
+              }
+            },
+            {
+              "name": {
+                "value": "Biography"
+              }
+            },
+            {
+              "name": {
+                "value": "Fantasy"
+              }
+            },
+            {
+              "name": {
+                "value": "Science"
+              }
+            },
+            {
+              "name": {
+                "value": "Nonfiction"
+              }
+            },
+            {
+              "name": {
+                "value": "Fiction"
+              }
+            }
+          ],
+          "name": "BookGenre"
+        }
+      ],
+      "invocationName": "ducky bookstore"
     }
   }
 }
