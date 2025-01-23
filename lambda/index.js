@@ -13,10 +13,9 @@ const LaunchRequestHandler = {
         return (0, ask_sdk_core_1.getRequestType)(handlerInput.requestEnvelope) === "LaunchRequest";
     },
     handle(handlerInput) {
-        const speakOutput = "Hello from Ducky. Welcome to my Bookstore, what can I get ya today?";
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+            .speak((0, utils_1.getGreetingPrompt)())
+            .reprompt((0, utils_1.getRepromptPrompts)())
             .getResponse();
     },
 };
@@ -26,12 +25,11 @@ const SearchBooksIntentHandler = {
             (0, ask_sdk_core_1.getIntentName)(handlerInput.requestEnvelope) === "SearchBooksIntent");
     },
     handle(handlerInput) {
-        const speakOutput = "Hello World from Ducky!";
         const slots = handlerInput.requestEnvelope.request.intent
             .slots;
         if (!slots) {
             return handlerInput.responseBuilder
-                .speak("I don't think that's a question for me, let's try again!")
+                .speak((0, utils_1.getNoSlotPrompt)())
                 .reprompt((0, utils_1.getRepromptPrompts)())
                 .getResponse();
         }
@@ -44,7 +42,7 @@ const SearchBooksIntentHandler = {
                 .getResponse();
         }
         return (handlerInput.responseBuilder
-            .speak(speakOutput)
+            .speak((0, utils_1.getResultPrompts)(results))
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse());
     },
@@ -55,10 +53,9 @@ const HelpIntentHandler = {
             (0, ask_sdk_core_1.getIntentName)(handlerInput.requestEnvelope) === "AMAZON.HelpIntent");
     },
     handle(handlerInput) {
-        const speakOutput = "You can say hello to me! How can I help?";
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+            .speak((0, utils_1.getHelpPrompts)())
+            .reprompt((0, utils_1.getRepromptPrompts)())
             .getResponse();
     },
 };
@@ -69,8 +66,9 @@ const CancelAndStopIntentHandler = {
                 (0, ask_sdk_core_1.getIntentName)(handlerInput.requestEnvelope) === "AMAZON.StopIntent"));
     },
     handle(handlerInput) {
-        const speakOutput = "Goodbye!";
-        return handlerInput.responseBuilder.speak(speakOutput).getResponse();
+        return handlerInput.responseBuilder
+            .speak((0, utils_1.getGoodbyePrompts)())
+            .getResponse();
     },
 };
 /* *
@@ -84,10 +82,9 @@ const FallbackIntentHandler = {
             (0, ask_sdk_core_1.getIntentName)(handlerInput.requestEnvelope) === "AMAZON.FallbackIntent");
     },
     handle(handlerInput) {
-        const speakOutput = "Sorry, I don't know about that. Please try again.";
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+            .speak((0, utils_1.getFallbackPrompts)())
+            .reprompt((0, utils_1.getRepromptPrompts)())
             .getResponse();
     },
 };
@@ -118,10 +115,7 @@ const IntentReflectorHandler = {
     handle(handlerInput) {
         const intentName = (0, ask_sdk_core_1.getIntentName)(handlerInput.requestEnvelope);
         const speakOutput = `You just triggered ${intentName}`;
-        return (handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse());
+        return handlerInput.responseBuilder.speak(speakOutput).getResponse();
     },
 };
 /**
@@ -134,11 +128,10 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = "Sorry, I had trouble doing what you asked. Please try again.";
-        console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
+        console.error(`~~~~ Error handled: ${JSON.stringify(error)}`);
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+            .speak((0, utils_1.getErrorPrompts)())
+            .reprompt((0, utils_1.getRepromptPrompts)())
             .getResponse();
     },
 };

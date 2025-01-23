@@ -1,9 +1,16 @@
 import Fuse from "fuse.js";
 import { match } from "ts-pattern";
 import {
+  ERROR_PROMPTS,
+  FALLBACK_PROMPTS,
+  GOODBYE_PROMPTS,
+  GREETING_PROMPTS,
+  HELP_PROMPTS,
   MOCK_BOOK_RESPONSE,
   NO_MATCH_PROMPTS,
+  NO_SLOT_PROMPTS,
   REPROMPT_PROMPTS,
+  RESULT_PROMPTS,
 } from "./mock-data";
 import {
   AvailableGenre,
@@ -73,10 +80,53 @@ export const getUserInputFromSlots = (slots: Slots): UserInput => {
   };
 };
 
+export const getGreetingPrompt = () => {
+  return getRandomPrompt(GREETING_PROMPTS);
+};
+
+export const getNoSlotPrompt = () => {
+  return getRandomPrompt(NO_SLOT_PROMPTS);
+};
+
 export const getNoResultPrompt = () => {
-  return NO_MATCH_PROMPTS[Math.floor(Math.random() * NO_MATCH_PROMPTS.length)];
+  return getRandomPrompt(NO_MATCH_PROMPTS);
 };
 
 export const getRepromptPrompts = () => {
-  return REPROMPT_PROMPTS[Math.floor(Math.random() * REPROMPT_PROMPTS.length)];
+  return getRandomPrompt(REPROMPT_PROMPTS);
+};
+
+export const getHelpPrompts = () => {
+  return getRandomPrompt(HELP_PROMPTS);
+};
+
+export const getGoodbyePrompts = () => {
+  return getRandomPrompt(GOODBYE_PROMPTS);
+};
+
+export const getFallbackPrompts = () => {
+  return getRandomPrompt(FALLBACK_PROMPTS);
+};
+
+export const getErrorPrompts = () => {
+  return getRandomPrompt(ERROR_PROMPTS);
+};
+
+export const getResultPrompts = (bookItems: BookItem[]) => {
+  const prompt = getRandomPrompt(RESULT_PROMPTS);
+
+  const numResultToReturn = Math.min(bookItems.length, MAX_RESULT_RETURN);
+  return prompt
+    .replace("{numResults}", bookItems.length.toString())
+    .replace("{actualResultToReturn}", numResultToReturn.toString())
+    .replace(
+      "{results}",
+      bookItems.map((item) => item.volumeInfo?.title).join(", "),
+    );
+};
+
+const MAX_RESULT_RETURN = 5;
+
+const getRandomPrompt = (prompts: string[]) => {
+  return prompts[Math.floor(Math.random() * prompts.length)];
 };

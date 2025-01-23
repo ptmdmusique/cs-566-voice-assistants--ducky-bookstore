@@ -13,8 +13,15 @@ import {
 import { IntentRequest } from "ask-sdk-model";
 import { Slots } from "./types";
 import {
+  getErrorPrompts,
+  getFallbackPrompts,
+  getGoodbyePrompts,
+  getGreetingPrompt,
+  getHelpPrompts,
   getNoResultPrompt,
+  getNoSlotPrompt,
   getRepromptPrompts,
+  getResultPrompts,
   getUserInputFromSlots,
   queryForData,
 } from "./utils";
@@ -24,12 +31,9 @@ const LaunchRequestHandler: RequestHandler = {
     return getRequestType(handlerInput.requestEnvelope) === "LaunchRequest";
   },
   handle(handlerInput) {
-    const speakOutput =
-      "Hello from Ducky. Welcome to my Bookstore, what can I get ya today?";
-
     return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
+      .speak(getGreetingPrompt())
+      .reprompt(getRepromptPrompts())
       .getResponse();
   },
 };
@@ -42,13 +46,12 @@ const SearchBooksIntentHandler: RequestHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "Hello World from Ducky!";
     const slots = (handlerInput.requestEnvelope.request as IntentRequest).intent
       .slots as unknown as Slots;
 
     if (!slots) {
       return handlerInput.responseBuilder
-        .speak("I don't think that's a question for me, let's try again!")
+        .speak(getNoSlotPrompt())
         .reprompt(getRepromptPrompts())
         .getResponse();
     }
@@ -65,7 +68,7 @@ const SearchBooksIntentHandler: RequestHandler = {
 
     return (
       handlerInput.responseBuilder
-        .speak(speakOutput)
+        .speak(getResultPrompts(results))
         //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
         .getResponse()
     );
@@ -80,11 +83,9 @@ const HelpIntentHandler: RequestHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "You can say hello to me! How can I help?";
-
     return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
+      .speak(getHelpPrompts())
+      .reprompt(getRepromptPrompts())
       .getResponse();
   },
 };
@@ -98,9 +99,9 @@ const CancelAndStopIntentHandler: RequestHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "Goodbye!";
-
-    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
+    return handlerInput.responseBuilder
+      .speak(getGoodbyePrompts())
+      .getResponse();
   },
 };
 /* *
@@ -116,11 +117,9 @@ const FallbackIntentHandler: RequestHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "Sorry, I don't know about that. Please try again.";
-
     return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
+      .speak(getFallbackPrompts())
+      .reprompt(getRepromptPrompts())
       .getResponse();
   },
 };
@@ -156,12 +155,7 @@ const IntentReflectorHandler: RequestHandler = {
     const intentName = getIntentName(handlerInput.requestEnvelope);
     const speakOutput = `You just triggered ${intentName}`;
 
-    return (
-      handlerInput.responseBuilder
-        .speak(speakOutput)
-        //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-        .getResponse()
-    );
+    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
   },
 };
 /**
@@ -174,13 +168,11 @@ const ErrorHandler: ErrorHandler = {
     return true;
   },
   handle(handlerInput, error) {
-    const speakOutput =
-      "Sorry, I had trouble doing what you asked. Please try again.";
-    console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
+    console.error(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
     return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
+      .speak(getErrorPrompts())
+      .reprompt(getRepromptPrompts())
       .getResponse();
   },
 };
