@@ -26,15 +26,15 @@ const LaunchRequestHandler: RequestHandler = {
   },
 };
 
-const HelloWorldIntentHandler: RequestHandler = {
+const SearchBooksIntentHandler: RequestHandler = {
   canHandle(handlerInput) {
     return (
       getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
-      getIntentName(handlerInput.requestEnvelope) === "HelloWorldIntent"
+      getIntentName(handlerInput.requestEnvelope) === "SearchBooksIntent"
     );
   },
   handle(handlerInput) {
-    const speakOutput = "Hello World!";
+    const speakOutput = "Hello World from Ducky!";
 
     return (
       handlerInput.responseBuilder
@@ -161,7 +161,7 @@ const ErrorHandler: ErrorHandler = {
 export const handler = SkillBuilders.custom()
   .addRequestHandlers(
     LaunchRequestHandler,
-    HelloWorldIntentHandler,
+    SearchBooksIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     FallbackIntentHandler,
