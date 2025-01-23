@@ -48,6 +48,7 @@ const search = (
 ): BookItem[] => {
   const fuse = new Fuse(MOCK_BOOK_RESPONSE.items, {
     keys: [getFuseKeyFromSlotType(slotType)],
+    isCaseSensitive: false,
   });
 
   return fuse.search(value).map(({ item }) => item);
