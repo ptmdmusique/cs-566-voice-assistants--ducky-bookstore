@@ -414,7 +414,7 @@ export const HELP_PROMPTS: string[] = [
   "I’m here to help! Try saying, 'Recommend me a mystery book,' or 'Find books about cooking.' What’s your request?",
   "You can ask me things like, 'Show me fantasy books,' or 'Find books by Stephen King.' What can I do for you today?",
   "Looking for a book? Just tell me the title, author, or genre, and I’ll help you find it!",
-  "I can find books for you! Try saying, 'Find romance novels,' or 'Search for books by Agatha Christie.' Ready to search?",
+  "I can find books for you! Try saying, 'Find romance novels,' or 'Search for books by j.K. Rowling.' Ready to search?",
   "Quack quack! I can help you find books by title, author, or category. Just let me know what you’re looking for!",
 ];
 

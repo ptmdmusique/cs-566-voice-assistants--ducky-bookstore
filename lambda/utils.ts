@@ -27,7 +27,9 @@ export const queryForData = (userInput: UserInput) => {
 
   if (userInput.Genre) {
     results = results.filter((item) => {
-      return item.volumeInfo?.categories?.includes(userInput.Genre);
+      return item.volumeInfo?.categories
+        .map((category) => category.toLowerCase())
+        ?.includes(userInput.Genre.toLowerCase());
     });
   }
 
